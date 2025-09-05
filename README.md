@@ -1,17 +1,31 @@
-# <Navn på action>
+# Update sfdx-project.json dependencies from installed packages
 
-<Beskrivelse av action>
+Oppdaterer pakkeversjoner i sfdx-project.json basert på hva som er installert i `target-org`.  
+MERK: Denne Git Hub actionen hverken legger til eller fjerner pakker, den bare oppdaterer versjonen på pakker i lista.
 
 ## Usage
 
 <!-- Start usage -->
 ```yaml
-- uses: navikt/<reponame>@<tag/sha>
+- name: Update sfdx-project.json dependencies
+    id: update-dependencies
+    uses: navikt/sf-gha-update-sfdx-project-dependencies@main
     with:
-        # Description of input parameter
-        # Required: true/false
+        # Alias or username of the target org to fetch installed packages from
+        # Required: true
         # Default: ''
-        input-parameter: ''
+        target-org: ''
+        
+        # Path to sfdx-project.json
+        # Required: false
+        # Default: 'sfdx-project.json'
+        sfdx-project-path: ''
+
+- name: Next action
+    run: |
+        echo "sfdx-project.json updated: $SFDX_PROJECT_UPDATED"
+    env:
+        SFDX_PROJECT_UPDATED: ${{ steps.update-dependencies.outputs.updated == 'true' }}
 ```
 <!-- end usage -->
 
